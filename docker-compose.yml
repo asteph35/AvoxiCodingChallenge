@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: mysql/mysql-server:5.7
+    ports:
+      - "3305:3306"
+    environment:
+      - DB_USER = user
+      - DB_PASSWORD = toor
+      - DB_HOST = localhost
+      - DB_NAME = avoxi
+      - DB_PORT = 3306
+  web:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
