@@ -42,6 +42,16 @@ func TestIP(t *testing.T) {
 		require.Equal(t, err, usecase.InvalidIP)
 		require.Nil(t, countryMap)
 	})
+	t.Run("jp ipv6 address with three allowable countries", func(t *testing.T) {
+		var ip = "2001:218:c000:4000::135"
+
+		countryMap, err := ipm.IPChecker(ip, us, jp, ua)
+		require.NoError(t, err)
+		assert.Len(t, countryMap, 3)
+		assert.Equal(t, false, countryMap[us])
+		assert.Equal(t, true, countryMap[jp])
+		assert.Equal(t, false, countryMap[ua])
+	})
 }
 
 func ipRepo() usecase.IPRepo {

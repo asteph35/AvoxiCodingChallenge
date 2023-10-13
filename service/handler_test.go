@@ -35,7 +35,12 @@ func Test_CheckIP_Handler(t *testing.T) {
 	var res models.IPCheckerRes
 	err = json.NewDecoder(rr.Body).Decode(&res)
 	require.NoError(t, err)
-	assert.True(t, res.Countries[us])
-	assert.False(t, res.Countries[jp])
-	assert.False(t, res.Countries[ua])
+	assert.Len(t, res.Countries, 3)
+	assert.Equal(t, ip, res.IP)
+	assert.Equal(t, us, res.Countries[0].Country)
+	assert.True(t, res.Countries[0].Status)
+	assert.Equal(t, jp, res.Countries[1].Country)
+	assert.False(t, res.Countries[1].Status)
+	assert.Equal(t, ua, res.Countries[2].Country)
+	assert.False(t, res.Countries[2].Status)
 }

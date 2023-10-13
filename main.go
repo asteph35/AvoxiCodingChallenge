@@ -1,4 +1,4 @@
-package AvoxiCodingChallenge
+package main
 
 import (
 	"AvoxiCodingChallenge/repository"

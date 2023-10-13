@@ -17,7 +17,7 @@ func (s Service) CheckIP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	res := models.NewIPCheckerRes(countryMap)
+	res := models.NewIPCheckerRes(req.IP, countryMap)
 	err = json.NewEncoder(w).Encode(res)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

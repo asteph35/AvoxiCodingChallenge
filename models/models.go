@@ -8,7 +8,12 @@ type IPCheckerReq struct {
 }
 
 type IPCheckerRes struct {
-	Countries CountryMap `json:"countries,omitempty"`
+	IP        string          `json:"ipAddress,omitempty"`
+	Countries []CountryStatus `json:"countries,omitempty"`
+}
+type CountryStatus struct {
+	Country string `json:"country,omitempty"`
+	Status  bool   `json:"ipInCountry"`
 }
 
 func NewIPCheckerReq(ip string, countries ...string) IPCheckerReq {
@@ -18,8 +23,16 @@ func NewIPCheckerReq(ip string, countries ...string) IPCheckerReq {
 	}
 }
 
-func NewIPCheckerRes(countryMap CountryMap) IPCheckerRes {
+func NewIPCheckerRes(ip string, countryMap CountryMap) IPCheckerRes {
+	var statuses []CountryStatus
+	for c, s := range countryMap {
+		statuses = append(statuses, CountryStatus{
+			Country: c,
+			Status:  s,
+		})
+	}
 	return IPCheckerRes{
-		countryMap,
+		IP:        ip,
+		Countries: statuses,
 	}
 }

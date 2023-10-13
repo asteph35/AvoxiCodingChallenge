@@ -2,7 +2,8 @@ package usecase
 
 import (
 	"AvoxiCodingChallenge/models"
-	"strings"
+	ip "github.com/cilium/cilium/pkg/ip"
+	"net"
 )
 
 type (
@@ -15,7 +16,12 @@ func NewIPManager(r IPRepo) IPManager {
 	return IPManager{repo: r}
 }
 
-func (ipm IPManager) IPChecker(ip string, countries ...string) (models.CountryMap, error) {
+func (ipm IPManager) IPChecker(ipAddress string, countries ...string) (models.CountryMap, error) {
+	address := net.ParseIP(ipAddress)
+	if address == nil {
+		return nil, InvalidIP
+	}
+
 	countryMap := make(map[string]bool)
 	for _, country := range countries {
 		networks, err := ipm.repo.GetNetworks(country)
@@ -24,12 +30,23 @@ func (ipm IPManager) IPChecker(ip string, countries ...string) (models.CountryMa
 		}
 		countryMap[country] = false
 		for _, network := range networks {
-			lastIndex := strings.LastIndex(ip, ".")
-			if lastIndex == -1 {
-				return nil, InvalidIP
+			if ip.IsIPv4(address) {
+				_, cidrRange, err := net.ParseCIDR(network)
+				if err != nil {
+					return nil, err
+				}
+				if cidrRange.Contains(address) {
+					countryMap[country] = true
+				}
 			}
-			if strings.HasPrefix(network, ip[:lastIndex]) {
-				countryMap[country] = true
+			if ip.IsIPv6(address) {
+				_, cidrRange, err := net.ParseCIDR(network)
+				if err != nil {
+					return nil, err
+				}
+				if cidrRange.Contains(address) {
+					countryMap[country] = true
+				}
 			}
 		}
 	}
