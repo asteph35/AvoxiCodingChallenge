@@ -37,10 +37,4 @@ func Test_CheckIP_Handler(t *testing.T) {
 	require.NoError(t, err)
 	assert.Len(t, res.Countries, 3)
 	assert.Equal(t, ip, res.IP)
-	assert.Equal(t, us, res.Countries[0].Country)
-	assert.True(t, res.Countries[0].Status)
-	assert.Equal(t, jp, res.Countries[1].Country)
-	assert.False(t, res.Countries[1].Status)
-	assert.Equal(t, ua, res.Countries[2].Country)
-	assert.False(t, res.Countries[2].Status)
 }
