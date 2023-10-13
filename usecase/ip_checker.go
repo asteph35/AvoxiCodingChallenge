@@ -15,6 +15,7 @@ func NewIPManager(r IPRepo) IPManager {
 	return IPManager{repo: r}
 }
 
+// IPChecker takes an ip address and list of countries and checks whether that ip is in each countries CIDR range or not
 func (ipm IPManager) IPChecker(ipAddress string, countries ...string) (models.CountryMap, error) {
 	address := net.ParseIP(ipAddress)
 	if address == nil {
