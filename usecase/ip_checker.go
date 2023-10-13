@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"AvoxiCodingChallenge/models"
-	ip "github.com/cilium/cilium/pkg/ip"
 	"net"
 )
 
@@ -16,6 +15,7 @@ func NewIPManager(r IPRepo) IPManager {
 	return IPManager{repo: r}
 }
 
+// IPChecker takes an ip address and list of countries and checks whether that ip is in each countries CIDR range or not
 func (ipm IPManager) IPChecker(ipAddress string, countries ...string) (models.CountryMap, error) {
 	address := net.ParseIP(ipAddress)
 	if address == nil {
@@ -30,23 +30,12 @@ func (ipm IPManager) IPChecker(ipAddress string, countries ...string) (models.Co
 		}
 		countryMap[country] = false
 		for _, network := range networks {
-			if ip.IsIPv4(address) {
-				_, cidrRange, err := net.ParseCIDR(network)
-				if err != nil {
-					return nil, err
-				}
-				if cidrRange.Contains(address) {
-					countryMap[country] = true
-				}
+			_, cidrRange, err := net.ParseCIDR(network)
+			if err != nil {
+				return nil, err
 			}
-			if ip.IsIPv6(address) {
-				_, cidrRange, err := net.ParseCIDR(network)
-				if err != nil {
-					return nil, err
-				}
-				if cidrRange.Contains(address) {
-					countryMap[country] = true
-				}
+			if cidrRange.Contains(address) {
+				countryMap[country] = true
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package repository
 
+// GetNetworks returns a list of networks from a given country
 func (r Repo) GetNetworks(country string) ([]string, error) {
 	query := `
 SELECT icb.network FROM avoxi.ip_country_blocks icb

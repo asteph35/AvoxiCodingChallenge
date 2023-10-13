@@ -16,7 +16,7 @@ func New() Repo {
 	return Repo{db: CreateConnection()}
 }
 
-// create connection with postgres db
+// CreateConnection with mysql db
 func CreateConnection() *sql.DB {
 	// load .env file
 	err := godotenv.Load("../.env")
