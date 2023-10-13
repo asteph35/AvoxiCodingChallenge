@@ -20,9 +20,11 @@ func New() Repo {
 func CreateConnection() *sql.DB {
 	// load .env file
 	err := godotenv.Load("../.env")
-
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatalf("Error loading .env file")
+		}
 	}
 
 	// Open the connection

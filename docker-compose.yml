@@ -1,21 +1,41 @@
 version: '3'
 
+#services:
+#  db:
+#    image: mysql/avoxi
+#    ports:
+#      - "3305:3306"
+#    environment:
+#      - DB_USER = root
+#      - DB_PASSWORD = toor
+#      - DB_HOST = localhost
+#      - DB_NAME = avoxi
+#      - DB_PORT = 3306
+#  web:
+#    build: .
+#    env_file:
+#      - .env
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - .:/usr/src/app
+
 services:
+
   db:
-    image: mysql/mysql-server:5.7
+    image: mysql
     ports:
       - "3305:3306"
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
     environment:
-      - DB_USER = user
-      - DB_PASSWORD = toor
-      - DB_HOST = localhost
-      - DB_NAME = avoxi
-      - DB_PORT = 3306
-  web:
-    build: .
-    env_file:
-      - .env
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_HOST: localhost
+      MYSQL_PASSWORD: toor
+      MYSQL_DB: avoxi
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - "3000:3000"
-    volumes:
-      - .:/usr/src/app
+      - 8080:8080
