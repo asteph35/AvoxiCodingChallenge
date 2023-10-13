@@ -2,22 +2,29 @@
 
 
 To Run:
-
-make run or go run ./main.go
+```
+make run
+```
+or
+```
+go run ./main.go
+```
 
 Endpoint:
 /ip-check GET
 
 Request Body example:
+```json
 {
     "ipAddress": "5.170.0.1",
     "countries": [
         "US", "UA", "JP"
     ]
 }
-
+```
 
 Response Example:
+```json
 {
     "ipAddress": "5.170.0.1",
     "countries": [
@@ -35,3 +42,4 @@ Response Example:
         }
     ]
 }
+```
