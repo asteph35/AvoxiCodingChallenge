@@ -11,4 +11,4 @@ RUN go mod download
 RUN go build -o main .
 
 
-#CMD ["/usr/src/app/main"]
+CMD ["/usr/src/app/main"]
