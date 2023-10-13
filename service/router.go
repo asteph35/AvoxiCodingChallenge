@@ -5,11 +5,10 @@ import (
 )
 
 // Router is exported and used in main.go
-func Router() *mux.Router {
+func Router(s Service) *mux.Router {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/api/book/{id}", CheckIP).Methods("GET", "OPTIONS")
-
+	router.HandleFunc("/ip-check", s.CheckIP).Methods("GET")
 	return router
 }
